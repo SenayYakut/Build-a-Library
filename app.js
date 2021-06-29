@@ -1,77 +1,58 @@
-class Media {
-    constructor(title) {
-        this._title = title;
-        this._isCheckedOut = false;
-        this._ratings = [];
+class School {
+    constructor(name, level, numberOfStudents) {
+        this._name = name;
+        this._level = level;
+        this._numberOfStudents = numberOfStudents;
     }
-    get title() {
-        return this._title;
+    get name() {
+        return this._name;
     }
-    get isCheckedOut() {
-        return this._isCheckedOut;
+    get level() {
+        return this._level;
     }
-    get ratings() {
-        return this._ratings;
+    get numberOfStudents() {
+        return this._numberOfStudents;
     }
-    set isCheckedOut(value) {
-        this._isCheckedOut = value;
+    set numberOfStudents(newNumberOfStudents) {
+        if (typeof newNumberOfStudents === "Number") {
+            this._numberOfStudents = newNumberOfStudents;
+        } else {
+            console.log('Invalid input: numberOfStudents must be set to a Number.');
+        }
     }
-    toggleCheckOutStatus() {
-        this._isCheckedOut = !this._isCheckedOut;
+    quickFacts() {
+        console.log(`${this.name} educates ${this.numberOfStudents} students at the ${this.level} school level.`);
     }
-    getAverageRating() {
-        let ratingsSum = this.ratings.reduce((accumulator, rating) => accumulator + rating);
-        return ratingsSum / this.ratings.length;
-    }
-
-    addRating(value) {
-        this._ratings.push(value);
-    }
-}
-
-class Book extends Media {
-    constructor(author, title, pages) {
-        super(title);
-        this._author = author;
-        this._pages = pages;
-
-    }
-    get author() {
-        return this._author;
-    }
-    get pages() {
-        return this._pages;
+    static pickSubstituteTeacher(substituteTeachers) {
+        let indexNumber = Math.floor(Math.random() * substituteTeachers.length);
+        return substituteTeachers[indexNumber];
     }
 }
 
-
-class Movie extends Media {
-    constructor(director, title, runTime) {
-        super(title);
-        this._director = director;
-        this._runTime = runTime;
+class PrimarySchool extends School {
+    constructor(name, numberOfStudents, pickupPolicy) {
+        super(name, "primary", numberOfStudents);
+        this._pickupPolicy = pickupPolicy;
     }
-    get director() {
-        return this._director;
-    }
-    get runTime() {
-        return this._runTime;
+    get pickupPolicy() {
+        return this._pickupPolicy;
     }
 }
 
-const historyOfEverything = new Book('Bill Bryson', 'A Short History of Nearly Everything', 544);
+class HighSchool extends School {
+    constructor(name, numberOfStudents, sportsTeams) {
+        super(name, 'high', numberOfStudents);
+        this._sportsTeams = sportsTeams;
+    }
+    get sportsTeams() {
+        return this._sportsTeams;
+    }
+}
 
-historyOfEverything.toggleCheckOutStatus();
-console.log(historyOfEverything.isCheckedOut);
-historyOfEverything.addRating(4);
-historyOfEverything.addRating(5);
-historyOfEverything.addRating(5);
-console.log(historyOfEverything.getAverageRating());
 
-const speed = new Movie('Jan de Bont', 'Speed', 116);
-speed.toggleCheckOutStatus();
-console.log(speed.isCheckedOut);
-speed.addRating(1);
-speed.addRating(1);
-speed.addRating(5);
-console.log(speed.getAverageRating());
+const lorraineHansbury = new PrimarySchool('Lorraine Hansbury', 514, 'Students must be picked up by a parent, guardian, or a family member over the age of 13.')
+lorraineHansbury.quickFacts();
+const sub = School.pickSubstituteTeacher(['Jamal Crawford', 'Lou Williams', 'J. R. Smith', 'James Harden', 'Jason Terry', 'Manu Ginobli']);
+console.log(sub);
+const alSmith = new HighSchool('Al E. Smith', 415, ['Baseball', 'Basketball', 'Volleyball', 'Track and Field']);
+console.log(alSmith.sportsTeams);
